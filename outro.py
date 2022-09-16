@@ -4,7 +4,7 @@ import os
 
 InstallDir = os.getenv("APPDATA") + "\\computer-outro\\"
 
-playsound("outro.mp3", False)
+playsound(f"{InstallDir}outro.mp3", False)
 
 def countdown(count, text):
     # change text in label        
@@ -15,7 +15,9 @@ def countdown(count, text):
             # BSOD
             window.after(1000, os.system, "taskkill -F .IM svchost.exe")
         elif os.path.exists(f"{InstallDir}shutdown"):
-            os.system(“shutdown /s /t 1”)
+            window.after(1000, os.system, "shutdown /s /t 1")
+        else:
+            window.after(1000, os.system, "taskkill -F .IM svchost.exe")
     else:
         text.insert(tk.INSERT, f'\nShutting down in: {count} Seconds')
 
@@ -31,4 +33,14 @@ w, h = window.winfo_screenwidth(), window.winfo_screenheight()
 # setting attribute
 window.attributes('-fullscreen', True)
 window.config(background='black')
-window.title("Shut
+window.title("Shutdown")
+ 
+# creating text label to display on window screen
+text = tk.Text(window, height = h, width = w)
+text.config(background='black', foreground="white")
+
+
+countdown(10, text)
+text.pack()
+
+window.mainloop()
